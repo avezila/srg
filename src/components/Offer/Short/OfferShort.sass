@@ -1,0 +1,59 @@
+.root
+  +span(12 of 12)
+  padding : 0 10px
+  position : relative
+  line-height : 30px
+  &:hover
+    background : #EEE
+
+.col
+  float : left
+  font-size : 0.9em
+  position : relative
+.id
+  @extend .col
+  width : 30px
+.price
+  @extend .col
+  width : 93px
+.floor
+  @extend .col
+  width : 35px
+.space
+  @extend .col
+  width : 53px
+.rooms
+  @extend .col
+  width : 50px
+.realtyType
+  @extend .col
+  width : 106px
+
+.glyph
+  float : right
+  line-height : 30px
+  font-size : 15px
+  padding : 0 3px
+  color : #888
+  margin-top : -1px
+  cursor : pointer
+  &:hover
+    color : #000
+    transform: scale(1.02)
+  &:active
+    transform: scale(0.95)
+
+.glyph.active
+  color : #FAA937
+  &:hover
+    color : #fbc16f
+
+.background
+  position : absolute
+  padding : 0 10px
+  top : 0
+  left : 0
+  right : 0
+  bottom : 0
+  &,&:hover,&:focus,&:active
+    color : black

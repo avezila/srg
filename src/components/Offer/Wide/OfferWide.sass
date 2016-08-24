@@ -1,0 +1,97 @@
+.root
+  +span(12 of 12)
+  position : absolute
+  left : 0
+  padding : 5px 10px
+  font-size : 0.9em
+  &:hover
+    background : #f2f5f8
+
+.header
+  +span(12 of 12)
+  padding : 0
+  float : left
+  line-height : 14px
+
+.header_title
+  float : left
+  padding : 0 5px
+  font-weight : 500
+  font-size : 13px
+
+.header_buttons
+  float : left
+
+.glyph
+  float : left
+  line-height : 14px
+  font-size : 13px
+  padding : 0 3px
+  color : #888
+  cursor : pointer
+  &:hover
+    color : #000
+    transform: scale(1.02)
+  &:active
+    transform: scale(0.95)
+    
+.glyph_plus
+  margin-top : -1px
+
+.glyph.active
+  color : #FAA937
+  &:hover
+    color : #fbc16f
+ 
+.id
+  float : left
+  padding : 0 4px
+  font-size : 10px
+  float : left
+  color : #aaa
+  line-height : 15px
+  
+.background
+  position : absolute
+  top : 0
+  left : 0
+  right : 0
+  bottom : 0
+
+.col
+  float : left
+  padding : 0
+  width : 160px
+  &.wide
+    width : 180px
+
+.row
+  float : left 
+  width : 100%
+  line-height : 20px
+  //padding-bottom : 5px
+
+
+.row_title
+  float : left
+  width : 100%
+  padding : 0 5px
+  padding-top : 5px
+  color : #777
+  font-weight : 500
+
+.row_value
+  width : 100%
+  float : left
+  padding : 0 5px
+
+.right .row_title
+  width : 130px
+.right .row_value
+  width : auto
+  padding-top : 5px
+
+.link
+  float : left
+  &,&:hover,&:focus,&:active
+    color : black

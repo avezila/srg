@@ -1,0 +1,45 @@
+
+.root
+  position: absolute
+  width : $favorite-width*1px
+
+  right    : $gutter*1px
+  top     : $gutter*1px
+  bottom  : $gutter*1px
+
+  z-index : 9
+  +shadow
+
+@media all\0 
+  .root
+    border : 1px solid #bbb
+    border-width : 0 1px 1px 0
+@media all and (monochrome:0)
+  .root
+    border : none\9
+@media all and (-ms-high-contrast:none)
+  .root
+    border : none
+
+.root.close
+  width : $favorite-width-min*1px
+
+.title
+  width   : 100%
+  padding : 0 10px
+  line-height : 2em
+  cursor  : pointer
+  &:hover
+    font-weight : 500
+
+.title_text
+  font-size : 1.3em
+  
+.glyph
+  line-height : 2em
+  float : right
+
+.content
+  +span(12 of 12)
+  padding : 0
+  padding-top : 10px

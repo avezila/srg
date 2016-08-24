@@ -1,0 +1,64 @@
+
+.root
+  width : $map-popover-width*1px
+  max-width : $map-popover-width*1px
+  height : $map-popover-height*1px
+  left : -$map-popover-width*1px/2
+  top : -$map-popover-height*1px
+  border : none
+  +shadow
+
+@media all\0 
+  .root
+    border : 1px solid #bbb
+    border-width : 0 1px 1px 0
+@media all and (monochrome:0)
+  .root
+    border : none\9
+@media all and (-ms-high-contrast:none)
+  .root
+    border : none
+
+.block
+  +span(12 of 12)
+  position : absolute
+  padding : 0
+  top : 0
+  left : 0
+  height : 100%
+
+.header
+  +span(12 of 12)
+  padding-left : 10px
+  height : 35px
+  line-height : 35px
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgba(0,0,0,.2);
+
+.title
+  float : left
+
+.remove
+  float : right
+  width : 35px
+  text-align : center
+  font-size : 16px
+  cursor : pointer
+  opacity : 0.4 
+  &:hover
+    opacity : 0.8
+  &:active
+    transform: scale(0.95)
+  &,&:active,&:focus,&:hover
+    text-decoration : none
+    color : black
+
+.content
+  position : absolute
+  top : 35px
+  bottom : 0
+  left : 0
+  right : 0
+  padding : 0
+

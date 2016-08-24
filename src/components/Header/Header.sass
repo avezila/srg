@@ -1,0 +1,77 @@
+
+.root
+  +container
+  position : relative
+  background : #5682A3
+  z-index : 10
+  +shadow
+  color : white
+  font-size : 20px
+  font-weight : 500
+
+@media all\0 
+  .root
+    border : 1px solid #2E5B7D
+    border-width : 0 0 1px 0
+@media all and (monochrome:0)
+  .root
+    border : none\9
+@media all and (-ms-high-contrast:none)
+  .root
+    border : none
+
+
+.item
+  text-align : center
+  float : left
+  padding: 0 15px
+  font-size : 0.8em
+  &,&:hover,&:visited,&:focus
+    color : #FFF
+    text-decoration : none
+
+.logo
+  @extend .item
+  font-size : 1.1em
+  padding: 0 30px
+
+.link
+  @extend .item
+  &:hover
+    background : #5e8bad
+  &.active
+    background : #3e6b8d
+
+
+.loader
+  float : right
+  height : $header-height*1px
+  width : $header-height*1px
+  padding : 10px
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -ms-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+  opacity : 0
+
+.loader.active
+  opacity : 0.8
+
+
+
+@media all\0 
+  .loader
+    display : none
+  .loader.active
+    display : block
+@media all and (monochrome:0)
+  .loader
+    display : block
+  .loader.active
+    display : block
+@media all and (-ms-high-contrast:none)
+  .loader
+    display : block
+  .loader.active
+    display : block

@@ -1,0 +1,54 @@
+
+.root
+  +isolate
+  position: absolute
+  width : $filter-width*1px
+
+  left    : $gutter*1px
+  top     : $gutter*1px
+  bottom  : $gutter*1px
+
+  z-index : 9
+  +shadow
+
+@media all\0 
+  .root
+    border : 1px solid #bbb
+    border-width : 0 1px 1px 0
+@media all and (monochrome:0)
+  .root
+    border : none\9
+@media all and (-ms-high-contrast:none)
+  .root
+    border : none
+
+
+.root.close
+  width : $filter-width-min*1px
+
+.title
+  padding : 0 15px
+  width : 100%
+  cursor : pointer
+  line-height : 2em
+  &:hover
+    font-weight : 500
+.title_text
+  font-size : 1.3em
+.glyph
+  line-height : 2em
+  float : right
+
+.content
+  +span(12 of 12)
+  padding : 0 15px
+
+
+.row
+  float : left
+  width : 100%
+  padding : 3px 0
+.subtitle
+  font-size : 1.1em
+  font-weight : 500
+  padding-top : 6px

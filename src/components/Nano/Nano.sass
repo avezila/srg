@@ -1,0 +1,33 @@
+
+.root
+  background : white
+  padding : 15px 0
+
+.content
+  position : absolute
+  max-height : 100%
+
+.body
+  +span(12 of 12)
+  padding : 0
+  float : left
+
+:global
+  .nano > .nano-pane
+    background: #d8dfe5
+    background: rgba(216, 223, 225, 0.45)
+    border-radius: 2px
+    transition: none
+    width: 5px
+    right: 4px
+    top: 0px
+  .nano > .nano-content
+    bottom : auto
+  .nano > .nano-content:focus
+    outline : none
+:global
+  .nano > .nano-pane  > .nano-slider
+    background: #89a0b3
+    background: rgba(137, 160, 179, 0.5)
+    margin: 0
+    border-radius: 2px

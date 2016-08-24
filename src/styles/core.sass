@@ -1,0 +1,39 @@
+html, body
+  height : 100%
+  width : 100%
+
+body
+  background : #E7EBF0
+  font-family: 'Roboto', sans-serif
+  font-size : 13px
+
+a
+  transition: none
+
+
+:global
+  .multiselect-container>li>a>label
+    padding: 6px 20px 6px 40px
+  .multiselect-container>li>a>label>input[type=checkbox]
+    margin-bottom : -2px
+  .multiselect.btn
+    font-weight : 400
+    width : 100%
+    text-align : left
+    &.btn-default:focus
+      background-image : none
+    .caret
+      position : absolute
+      right : 6px
+      top : 50%
+      margin-top : -2px
+
+  .btn-group
+    width : 100%
+  .multiselect-container.dropdown-menu
+    width : 100%
+    &>li>a
+      white-space : inherit
+
+  .multiselect-selected-text
+    white-space: normal
