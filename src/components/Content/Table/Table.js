@@ -14,17 +14,12 @@ export default
 })) 
 class Table extends Component {
   static propTypes = {
-    update    : PropTypes.func.isRequired,
     offers    : PropTypes.object.isRequired,
     offerIDs  : PropTypes.array,
     scroll    : PropTypes.number.isRequired,
   }
   static defaultProps = {
     offerIDs : [],
-  }
-  
-  componentDidUpdate (){
-    this.props.update()
   }
   render () {
     let {offers,offerIDs,scroll} = this.props;

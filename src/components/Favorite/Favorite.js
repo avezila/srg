@@ -12,22 +12,32 @@ import s from './Favorite.sass'
 export default
 @connect(({cian}) =>({
   favoriteIDs : cian.context.favoriteIDs,
+  addedOfferIDs : cian.context.enviroment&&cian.context.enviroment.addedOfferIDs,
   offers      : cian.offers,
 }),{changeLayout})
 class Favorite extends Component {
   static propTypes = {
     favoriteIDs   : PropTypes.array.isRequired,
+    addedOfferIDs : PropTypes.array,
     offers        : PropTypes.object.isRequired,
     changeLayout  : PropTypes.func.isRequired, 
   }
   static defaultProps = {
-    favoriteIDs : [],
+    addedOfferIDs : [],
   }
   state = {
     open : true,
   }
   toggle (){
     this.setState({ open: !this.state.open })
+  }
+  componentWillReceiveProps (props){
+    let now = this.props.favoriteIDs.filter(id=>this.props.offers[id]).length
+    let will = props.favoriteIDs.filter(id=>props.offers[id]).length;
+    if(this.state.open && !will)
+      this.setState({ open: false });
+    else if (!this.state.open && !now && will )
+      this.setState({ open: true });
   }
   matchLayout (){
     if(!this.refs.root) return;
@@ -38,22 +48,27 @@ class Favorite extends Component {
   }
   render () {
     let {offers, favoriteIDs} = this.props;
+    
+    let _favoriteIDs = {};
+    let _addedOfferIDs = {};
+    this.props.favoriteIDs.map(v=>_favoriteIDs[v] = true)
+    this.props.addedOfferIDs.map(v=>_addedOfferIDs[v] = true)
 
     let rows = favoriteIDs.filter(id=>offers[id]).map(id=>
-      <OfferShort key={id} offer={offers[id]} />
+      <OfferShort key={id} offer={offers[id]} isFavorite={_favoriteIDs[id]} isAdded={_addedOfferIDs[id]} />
     )
     let isContent = this.state.open && rows.length != 0;
 
     return (
       <Nano
         onChange={::this.matchLayout}
-        ref="root" 
+        ref="root"
         byContent={true} 
         className={`${s.root} ${!isContent && s.close}`} >
         <div className={s.title} onClick={::this.toggle}>
-          <span className={s.title_text}>Избранное</span>
           { this.state.open ? <Glyphicon className={s.glyph} glyph="menu-down"  />
                             : <Glyphicon className={s.glyph} glyph="menu-right" /> }
+          <span className={s.title_text}>Избранное</span>
         </div>
         {isContent && <div className={s.content}>{rows}</div>}
       </Nano>

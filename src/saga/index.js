@@ -1,4 +1,4 @@
-import { takeEvery,  takeLatest } from 'redux-saga'
+import { takeEvery,  takeLatest, delay } from 'redux-saga'
 import { call, put, take, select, fork } from 'redux-saga/effects'
 import * as actions from 'actions'
 
@@ -191,6 +191,7 @@ function * updateContext (){
 }
 function * changeFavorite (action){
   yield put(actions.changeFavoriteOK(action.payload));
+  yield call(delay,1000);
   yield fork(updateContext);
 }
 

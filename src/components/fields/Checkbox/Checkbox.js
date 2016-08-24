@@ -9,7 +9,9 @@ import s from "./Checkbox.sass"
 export default
 class Checkbox extends Component {
   static propTypes = {
-    value     : PropTypes.object.isRequired,
+    value     : PropTypes.shape({
+      data : PropTypes.bool,
+    }).isRequired,
     onChange  : PropTypes.func.isRequired,
   }
   constructor (props){

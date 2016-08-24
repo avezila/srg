@@ -1,20 +1,26 @@
 import React, { Component, PropTypes } from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router'
-import Glyphicon from 'react-bootstrap/es/Glyphicon'
+import {connect}  from 'react-redux'
+import {Link}     from 'react-router'
+import Glyphicon  from 'react-bootstrap/es/Glyphicon'
 
 import {changeFavorite,addOfferToReport} from "actions"
-import s from './OfferShort.sass'
 import * as Cian from 'const/Cian'
 
+import s from './OfferShort.sass'
 
-@connect(({cian}) =>({
-  favoriteIDs : cian.context.favoriteIDs,
-  addedOfferIDs : cian.context.enviroment&&cian.context.enviroment.addedOfferIDs,
-}), {changeFavorite,addOfferToReport})
+
+export default
+@connect(null, {changeFavorite,addOfferToReport})
 class OfferShort extends Component {
+  static propTypes = {
+    offer       : PropTypes.object.isRequired,
+    isFavorite  : PropTypes.bool,
+    isAdded     : PropTypes.bool,
+    changeFavorite    : PropTypes.func.isRequired,
+    addOfferToReport  : PropTypes.func.isRequired,
+  }
   render (){
-    let {offer,favoriteIDs,changeFavorite,addedOfferIDs=[],addOfferToReport} = this.props;
+    let {offer,isFavorite,isAdded,changeFavorite,addOfferToReport} = this.props;
     
     let cols = [];
     if(offer.rooms)
@@ -50,16 +56,16 @@ class OfferShort extends Component {
         </Link>
         <Glyphicon
           title="Добавить в избранное"
-          className={s.glyph+ ((favoriteIDs.indexOf(offer.id)<0)?"":" "+s.active) }
+          className={s.glyph+ (isFavorite?" "+s.active:"") }
           onClick={()=> changeFavorite({
             favoriteIDs : {
-              [offer.id]: favoriteIDs.indexOf(offer.id)<0,
+              [offer.id]: !isFavorite,
             }, 
           })}
           glyph="star"  />
         <Glyphicon
           title="Добавить в отчет" 
-          className={s.glyph+ ((addedOfferIDs.indexOf(offer.id)<0)?"":" "+s.active) }
+          className={s.glyph+ (isAdded?" "+s.active:"") }
           onClick={()=> addOfferToReport({
             id : offer.id,
           })}
@@ -68,5 +74,3 @@ class OfferShort extends Component {
     )
   }
 }
-
-export default OfferShort;

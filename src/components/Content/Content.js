@@ -20,13 +20,14 @@ export default
 class Content extends Component {
   static propTypes = {
     pathname      : PropTypes.string.isRequired,
-    layout        : PropTypes.object.isRequired,
+    layout        : PropTypes.shape({
+      left  : PropTypes.array.isRequired,
+      right : PropTypes.array.isRequired,
+      center: PropTypes.array.isRequired,
+    }).isRequired,
     scroll        : PropTypes.number.isRequired,
     changeLayout  : PropTypes.func.isRequired,
     tableScroll   : PropTypes.func.isRequired,
-  }
-  update (){
-    this.refs.nano.update();
   }
   onChange (){
     if(!this.refs.nano) return;
@@ -61,9 +62,9 @@ class Content extends Component {
         <Link className={s.remove} to="/map">×</Link>
         {
           pathname.match('table')?
-            <Table scroll={scroll} update={::this.update} /> :
+            <Table scroll={scroll} /> :
           pathname.match('offer-')? 
-            <OfferFull update={::this.update} /> : null
+            <OfferFull /> : null
         }
       </Nano>
     )

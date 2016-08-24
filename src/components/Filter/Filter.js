@@ -1,29 +1,30 @@
 import React, { Component, PropTypes } from 'react'
 import {connect} from 'react-redux'
-
-
-import {Nano} from 'components'
-import {filterChange,changeLayout} from 'actions'
-import s from './Filter.sass'
-
+import Glyphicon from 'react-bootstrap/es/Glyphicon'
 import _set from "lodash/set"
 import _get from "lodash/get"
 
-
+import {Nano} from 'components'
 import {Multiselect,FromTo,Checkbox,Words} from "components/fields"
+import {filterChange,changeLayout} from 'actions'
 import {FilterToFields} from 'const/Cian'
-
-import Glyphicon from 'react-bootstrap/es/Glyphicon'
 import vars from 'styles/global.var.scss'
 
+import s from './Filter.sass'
 
+
+export default
 @connect(({cian}) =>({
   filter : cian.filter,
 }), {filterChange,changeLayout})
 class Filter extends Component {
-  constructor (props){
-    super(props)
-    this.state = {open : true}
+  static propTypes = {
+    filter       : PropTypes.object.isRequired,
+    filterChange : PropTypes.func.isRequired,
+    changeLayout : PropTypes.func.isRequired,
+  }
+  state = {
+    open : true,
   }
   onChange (field,value){
     let newFilter = {
@@ -72,7 +73,7 @@ class Filter extends Component {
     this.setState({ open: !this.state.open })
   }
   matchLayout (){
-    if(!this.refs.root)return;
+    if(!this.refs.root) return;
     if(this.state.open)
       this.props.changeLayout({left:[+vars.filterWidth,this.refs.root.height()]})
     else
@@ -80,38 +81,36 @@ class Filter extends Component {
   }
   render () {
     let fields = FilterToFields(this.props.filter)
-    let form = [];
+    let rows = [];
     
     for (let key in fields){
       let o = _get(fields,key)//fields[key];
-      if(o.hide)
-        continue;
+      if(o.hide) continue;
+
       if(o.title)
-        form.push(this.SubTitle(o.title,key));
+        rows.push(this.SubTitle(o.title,key));
       if(o.multiselect)
-        form.push(this.Multiselect(o.multiselect,key));
+        rows.push(this.Multiselect(o.multiselect,key));
       else if (o.fromto)
-        form.push(this.FromTo(o.fromto,key));
+        rows.push(this.FromTo(o.fromto,key));
       else if (o.checkbox)
-        form.push(this.Checkbox(o.checkbox,key));
+        rows.push(this.Checkbox(o.checkbox,key));
       else if (o.words)
-        form.push(this.Words(o.words,key));
+        rows.push(this.Words(o.words,key));
     }
     
 
     return (
       <Nano onChange={::this.matchLayout} ref="root" byContent={true} className={`${s.root} ${!this.state.open && s.close}`}>
         <div className={s.title} onClick={::this.toggle}>
-          <span className={s.title_text}>Фильтр</span>
           { this.state.open ? <Glyphicon className={s.glyph} glyph="menu-down"  />
                             : <Glyphicon className={s.glyph} glyph="menu-right" /> }
+          <span className={s.title_text}>Фильтр</span>
         </div>
         <div className={s.content}>
-          {this.state.open ? form : undefined}
+          {this.state.open ? rows : undefined}
         </div>
       </Nano>
     )
   }
 }
-
-export default Filter

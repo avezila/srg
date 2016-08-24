@@ -1,7 +1,7 @@
 import {handleActions} from "redux-actions"
 
 import * as actions from 'actions'
-import {Filter,Error,ParseOffer} from 'const/Cian'
+import {Filter,Error,ParseOffer,Context} from 'const/Cian'
 import {BoundsScale} from 'lib/Map'
 import lmerge from "lodash/merge"
 import luniq from "lodash/uniq"
@@ -131,8 +131,7 @@ export const cian = handleActions({
   }),
 }, {
   filter    : Filter(),
-  context   : {
-  },
+  context   : Context(),
   token     :  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkc2FkcyIsImV4cCI6OTAwMDAwMTQ3MDgzMjc5N30.nARQ90Cf0nJqZFFp3a-LN9HY9sqb6m2c6cA1KQarUXE",
   offers    : {},
   offerIDs  : [],

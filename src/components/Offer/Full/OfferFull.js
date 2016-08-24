@@ -1,23 +1,31 @@
 import React, { Component, PropTypes } from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
 import Glyphicon from 'react-bootstrap/es/Glyphicon'
-import {goBack} from 'redux-router'
 
 import {changeFavorite,addOfferToReport} from "actions"
-import s from './OfferFull.sass'
 import * as Cian from "const/Cian"
 
+import s from './OfferFull.sass'
 
+
+export default
 @connect(({cian,router}) =>({
-  favoriteIDs : cian.context.favoriteIDs,
-  addedOfferIDs : cian.context.enviroment&&cian.context.enviroment.addedOfferIDs,
-  id     : router.params.splat,
-  offers : cian.offers,
-}), {changeFavorite,addOfferToReport,goBack},null,{withRef:true})
+  favoriteIDs   : cian.context.favoriteIDs,
+  addedOfferIDs : cian.context.enviroment && cian.context.enviroment.addedOfferIDs,
+  id            : router.params.splat,
+  offers        : cian.offers,
+}), { changeFavorite, addOfferToReport })
 class OfferFull extends Component {
-  componentDidUpdate (){
-    this.props.update()
+  static propTypes = {
+    offers      : PropTypes.object.isRequired,
+    id          : PropTypes.string.isRequired,
+    favoriteIDs : PropTypes.array.isRequired,
+    addedOfferIDs     : PropTypes.array,
+    changeFavorite    : PropTypes.func.isRequired,
+    addOfferToReport  : PropTypes.func.isRequired,
+  }
+  static defaultProps = {
+    addedOfferIDs : [],
   }
   row (title,value){
     if(!value) return null;
@@ -29,7 +37,8 @@ class OfferFull extends Component {
     )
   }
   render (){
-    let {offers,id,favoriteIDs,changeFavorite,addedOfferIDs=[],addOfferToReport} = this.props;
+    let {offers,id,favoriteIDs,addedOfferIDs,changeFavorite,addOfferToReport} = this.props;
+
     let offer =  offers[id];
     if(!offer)
       return <div className={s.root} />;
@@ -105,5 +114,3 @@ class OfferFull extends Component {
     )
   }
 }
-
-export default OfferFull;

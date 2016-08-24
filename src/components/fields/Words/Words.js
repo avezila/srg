@@ -6,7 +6,7 @@ import Timeout from 'lib/Timeout'
 import s from "./Words.sass"
 
 
-export default
+export default 
 class Words extends Component {
   static propTypes = {
     value     : PropTypes.shape({
@@ -63,6 +63,7 @@ class Words extends Component {
         handleInputBlur={::this.handleAddition}
         autofocus={false}
         autocomplete={false}
+        classNames={s}
       />
     )
   }
