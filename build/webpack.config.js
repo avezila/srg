@@ -156,7 +156,13 @@ var babelSettings = {
   ],
   env: {
     production: {
-      presets: ['react-optimize']
+      //presets: ['react-optimize']
+      plugins : [
+        //'transform-react-constant-elements', // smth broken
+        'transform-react-inline-elements',
+        'transform-react-remove-prop-types',
+        'transform-react-pure-class-to-function',
+      ]
     }
   },
 }

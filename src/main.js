@@ -67,11 +67,11 @@ if (__DEV__) {
 
     // Wrap render in try/catch
     render = () => {
-      try {
+      //try {
         renderApp()
-      } catch (error) {
-        renderError(error)
-      }
+      //} catch (error) {
+      //  renderError(error)
+     // }
     }
 
     // Setup hot module replacement

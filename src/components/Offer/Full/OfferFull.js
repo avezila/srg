@@ -8,7 +8,6 @@ import * as Cian from "const/Cian"
 import s from './OfferFull.sass'
 
 
-export default
 @connect(({cian,router}) =>({
   favoriteIDs   : cian.context.favoriteIDs,
   addedOfferIDs : cian.context.enviroment && cian.context.enviroment.addedOfferIDs,
@@ -114,3 +113,5 @@ class OfferFull extends Component {
     )
   }
 }
+
+export default OfferFull;
