@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import convert from 'koa-convert'
 import webpack from 'webpack'
-import webpackConfig from '../build/webpack.config'
+import webpackConfig from '../deploy/webpack.config'
 import historyApiFallback from 'koa-connect-history-api-fallback'
 import serve from 'koa-static'
 import proxy from 'koa-proxy'
@@ -16,7 +16,7 @@ const paths = config.utils_paths
 const app = new Koa()
 
 app.use(cors({
-  origin : "*"
+  origin: '*'
 }))
 
 // Enable koa-proxy if it has been enabled in the config.

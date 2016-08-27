@@ -3,14 +3,16 @@ import {connect} from 'react-redux'
 import Glyphicon from 'react-bootstrap/es/Glyphicon'
 
 import {changeFavorite,addOfferToReport} from "actions"
+import {PrettyInt, PrettyFloat} from 'lib/Pretty'
 import * as Cian from "const/Cian"
 
 import s from './OfferFull.sass'
 
 
+export default
 @connect(({cian,router}) =>({
   favoriteIDs   : cian.context.favoriteIDs,
-  addedOfferIDs : cian.context.enviroment && cian.context.enviroment.addedOfferIDs,
+  addedOfferIDs : cian.context.enviroment.addedOfferIDs,
   id            : router.params.splat,
   offers        : cian.offers,
 }), { changeFavorite, addOfferToReport })
@@ -46,18 +48,18 @@ class OfferFull extends Component {
     rows.push(this.row("Тип объекта",Cian.OfferType.map(offer.type)));
     rows.push(this.row("",Cian.RealtyType.map(offer.realtyType)));
     if(offer.price)
-      rows.push(this.row("Цена",offer.price.toString().prettyInt()+"руб."));
+      rows.push(this.row("Цена",offer.price.toString()::PrettyInt()+"руб."));
     if(offer.pricePerMeter)
-      rows.push(this.row("Цена за метр",offer.pricePerMeter.toString().prettyInt()+"руб."));
+      rows.push(this.row("Цена за метр",offer.pricePerMeter.toString()::PrettyInt()+"руб."));
     if(offer.contractType)
       rows.push(this.row("Тип продажи",Cian.ContractType.map(offer.contractType)));
 
     if(offer.space)
-      rows.push(this.row("Общая площадь", <span>{offer.space.toString().prettyFloat()+"м"}<sup>2</sup></span>));
+      rows.push(this.row("Общая площадь", <span>{offer.space.toString()::PrettyFloat()+"м"}<sup>2</sup></span>));
     if(offer.kitchen)
-      rows.push(this.row("Площадь кухни", <span>{offer.kitchen.toString().prettyFloat()+"м"}<sup>2</sup></span>));
+      rows.push(this.row("Площадь кухни", <span>{offer.kitchen.toString()::PrettyFloat()+"м"}<sup>2</sup></span>));
     if(offer.living)
-      rows.push(this.row("Жилая площадь", <span>{offer.living.toString().prettyFloat()+" м"}<sup>2</sup></span>));
+      rows.push(this.row("Жилая площадь", <span>{offer.living.toString()::PrettyFloat()+" м"}<sup>2</sup></span>));
     if(offer.rooms)
       rows.push(this.row("Количество комнат",offer.rooms));
     if(offer.furniture != undefined)
@@ -113,5 +115,3 @@ class OfferFull extends Component {
     )
   }
 }
-
-export default OfferFull;

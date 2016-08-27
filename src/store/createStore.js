@@ -1,38 +1,38 @@
 import { applyMiddleware, compose, createStore } from 'redux'
-import thunk from 'redux-thunk'
-import { reduxReactRouter } from 'redux-router';
-import { createHistory,createHashHistory } from 'history';
-import { supportsHistory } from 'history/lib/DOMUtils.js';
+import { reduxReactRouter } from 'redux-router'
+import { createHistory, createHashHistory } from 'history'
+import { supportsHistory } from 'history/lib/DOMUtils.js'
 import createSagaMiddleware from 'redux-saga'
 
 import makeRootReducer from './reducers'
-import mySaga from '../saga'
+import CianSaga from '../saga'
 
 
 export default (initialState = {}) => {
   const sagaMiddleware = createSagaMiddleware()
   const middleware = [sagaMiddleware]
 
-  let historyPush = supportsHistory();
-  let create_history = historyPush? createHistory : createHashHistory;
+  let historyPush = supportsHistory()
+  let whichCreateHistory = historyPush ? createHistory : createHashHistory
   let historyOptions = {
-    queryKey  : "_",
+    queryKey  : '_',
     keyLength : 1,
   }
   if (!historyPush) {
-    if(window.location.hash == "")
-      window.location.hash = window.location.pathname;
-  }else {
-    let hash = (window.location.hash+"").replace(/^\#/,"");
-    if(hash && hash != 'undefined'){
-      history.pushState({},"",hash)
+    if (window.location.hash === '') {
+      window.location.hash = window.location.pathname
+    }
+  } else {
+    let hash = (window.location.hash + '').replace(/^#/, '')
+    if (hash && hash !== 'undefined') {
+      history.pushState({}, '', hash)
     }
   }
 
 
   const enhancers = [
     reduxReactRouter({
-      createHistory: ()=> create_history(historyOptions)
+      createHistory: () => whichCreateHistory(historyOptions)
     }),
   ]
   if (__DEBUG__) {
@@ -53,7 +53,7 @@ export default (initialState = {}) => {
   )
   store.asyncReducers = {}
 
-  sagaMiddleware.run(mySaga)
+  sagaMiddleware.run(CianSaga)
 
   if (module.hot) {
     module.hot.accept('./reducers', () => {

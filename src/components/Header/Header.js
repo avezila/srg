@@ -12,7 +12,7 @@ export default
 }))
 class Header extends Component {
   static propTypes = {
-    loading   : PropTypes.bool.isRequired,
+    loading   : PropTypes.number.isRequired,
     location  : PropTypes.object.isRequired, 
   }
   links = [

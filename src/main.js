@@ -1,27 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import BlueBird from 'bluebird/js/browser/bluebird.min.js'
+import jQuery from 'jquery'
+
 import App from './containers/App'
 import createStore from './store/createStore'
 
 // Setup bluebird as Promise
-global.Promise = BlueBird;
-require('babel-runtime/core-js/promise').default = BlueBird;
+global.Promise = BlueBird
+require('babel-runtime/core-js/promise').default = BlueBird
 
 // Global jQuery
-import $ from 'jquery'
-global.$ = global.jQuery = $
-import "jQuery-ajaxTransport-XDomainRequest"
-
-import "lib/Pretty"
-
-$.ajaxSetup({
+global.$ = global.jQuery = jQuery
+jQuery.ajaxSetup({
   cache: true
-});
-
-//$.support.cors = true;
-//window.__disableNativeFetch = true
-
+})
 
 const initialState = window.__INITIAL_STATE__ // for server side rendering
 const store = createStore(initialState)
@@ -47,7 +40,6 @@ let render = () => {
     <App
       store={store}
       routes={routes}
-      //history={history}
     />,
     MOUNT_NODE
   )
@@ -62,16 +54,18 @@ if (__DEV__) {
       const RedBox = require('redbox-react').default
 
       ReactDOM.render(<RedBox error={error} />, MOUNT_NODE)
-      setTimeout(()=>{throw error},1);
+      setTimeout(() => {
+        throw error
+      }, 1)
     }
 
     // Wrap render in try/catch
     render = () => {
-      //try {
+      try {
         renderApp()
-      //} catch (error) {
-      //  renderError(error)
-     // }
+      } catch (error) {
+        renderError(error)
+      }
     }
 
     // Setup hot module replacement

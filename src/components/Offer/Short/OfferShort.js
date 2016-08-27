@@ -4,13 +4,14 @@ import {Link}     from 'react-router'
 import Glyphicon  from 'react-bootstrap/es/Glyphicon'
 
 import {changeFavorite,addOfferToReport} from "actions"
+import {PrettyInt} from 'lib/Pretty'
 import * as Cian from 'const/Cian'
 
 import s from './OfferShort.sass'
 
 
 export default
-@connect(null, {changeFavorite,addOfferToReport})
+@connect(()=>({}), {changeFavorite,addOfferToReport})
 class OfferShort extends Component {
   static propTypes = {
     offer       : PropTypes.object.isRequired,
@@ -35,7 +36,7 @@ class OfferShort extends Component {
       cols.push(<div title={realtyType} key="realtyType" className={s.realtyType}>{short}</div>);
     }
     if(offer.price)
-      cols.push(<div title="Общая цена" key='price' className={s.price}>{offer.price.toString().prettyInt()+" руб."}</div>);
+      cols.push(<div title="Общая цена" key='price' className={s.price}>{offer.price.toString()::PrettyInt()+" руб."}</div>);
 
     if(offer.type == "FLAT"||offer.type == "COMMERCIAL"){
       let storeys = Math.max(...offer.storeys);

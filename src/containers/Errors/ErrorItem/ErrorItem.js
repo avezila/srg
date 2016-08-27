@@ -1,31 +1,54 @@
-import React, {Component} from 'react'
-import Alert from "react-bootstrap/es/Alert"
-import Collapse from "react-bootstrap/es/Collapse"
+import React, {Component, PropTypes} from 'react'
+import Alert    from 'react-bootstrap/es/Alert'
+import Collapse from 'react-bootstrap/es/Collapse'
 
-import s from "./ErrorItem.sass"
+import s from './ErrorItem.sass'
 
 
+export default
 class ErrorItem extends Component {
-  render (){
+  static propTypes = {
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]).isRequired,
+    type     : PropTypes.string,
+    msg      : PropTypes.string,
+    e        : PropTypes.object,
+    show     : PropTypes.bool.isRequired,
+    onClick  : PropTypes.func.isRequired,
+    onRemove : PropTypes.func.isRequired,
+  }
+  static defaultProps = {
+    type : '',
+    msg  : '',
+    e    : {},
+  }
+  onClick = () => {
+    this.props.onClick(this.props.id)
+  }
+  onDismiss = () => {
+    this.props.onRemove(this.props.id)
+  }
+  render () {
+    let {type, msg, show, e} = this.props
     return (
-      <Alert 
-        className={s.item} 
-        bsStyle="danger" 
-        onDismiss={()=>this.props.onRemove(this.props.id)}>
-        <div className={s.item_title} onClick={()=>this.props.onClick(this.props.id)}>
-        <strong>{(this.props.type||"") + " ERROR"}</strong> {this.props.msg ||""}
+      <Alert
+        className={s.item}
+        bsStyle='danger'
+        onDismiss={this.onDismiss}>
+        <div className={s.item_title} onClick={this.onClick}>
+          <strong>{`${type} ERROR`}</strong>
+          {msg}
         </div>
-        {(this.props.e)?(
-          <Collapse in={this.props.show}>
+        { e ? (
+          <Collapse in={show}>
             <pre className={s.item_inner}>
-            {this.props.e.message}
-            {this.props.e.stack}
+              {e.message}
+              {e.stack}
             </pre>
-          </Collapse>
-        ): undefined }
+          </Collapse>) : null}
       </Alert>
-    );
+    )
   }
 }
-
-export default ErrorItem;

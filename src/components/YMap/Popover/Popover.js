@@ -3,16 +3,23 @@ import {connect} from 'react-redux'
 import RBPopover from "react-bootstrap/es/Popover"
 
 import {OfferShort,Nano} from "components"
+
 import s from './Popover.sass'
 
 
+export default
 @connect(({cian}) =>({
   favoriteIDs : cian.context.favoriteIDs,
-  addedOfferIDs : cian.context.enviroment&&cian.context.enviroment.addedOfferIDs,
+  addedOfferIDs : cian.context.enviroment.addedOfferIDs,
 }))
 class Popover extends Component {
+  static propTypes = {
+    favoriteIDs   : PropTypes.array.isRequired,
+    addedOfferIDs : PropTypes.array, 
+    offers        : PropTypes.array.isRequired,
+    onClose       : PropTypes.func.isRequired,
+  }
   static defaultProps = {
-    favoriteIDs   : [],
     addedOfferIDs : [],
   }
   render (){
@@ -45,5 +52,3 @@ class Popover extends Component {
     )
   }
 }
-
-export default Popover;

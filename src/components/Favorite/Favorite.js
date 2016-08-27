@@ -12,7 +12,7 @@ import s from './Favorite.sass'
 export default
 @connect(({cian}) =>({
   favoriteIDs : cian.context.favoriteIDs,
-  addedOfferIDs : cian.context.enviroment&&cian.context.enviroment.addedOfferIDs,
+  addedOfferIDs : cian.context.enviroment.addedOfferIDs,
   offers      : cian.offers,
 }),{changeLayout})
 class Favorite extends Component {

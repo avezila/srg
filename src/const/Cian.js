@@ -1,5 +1,5 @@
 
-import {MEnum,VMap,Map,EMap,Float,String,Int,Bool,Type} from "lib/TypeSystem"
+import {MEnum, VMap, Map, Float, String, Int, Bool, Type} from 'lib/TypeSystem'
 
 
 export const ErrorType = MEnum("ErrorType",{
@@ -195,6 +195,8 @@ export const Context = Map("Context",{
   modified    : String,
   created     : String,
   comparable  : ComparableOffer,
+}).default({
+  enviroment : {},
 })
 
 

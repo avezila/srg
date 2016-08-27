@@ -50,11 +50,6 @@ class Content extends Component {
       left  : left [0]+vars.gutter*2,
       right : right[0]+vars.gutter*2,
     }
-    let _content =
-          pathname.match('table')?
-            (<Table scroll={scroll} />) :
-          pathname.match('offer-')? 
-            (<OfferFull />) : (<div />);
     
     return (
       <Nano
@@ -66,7 +61,12 @@ class Content extends Component {
         style={style}>
 
         <Link className={s.remove} to="/map">×</Link>
-        {_content}
+        {
+          pathname.match('table')?
+            <Table scroll={scroll} /> :
+          pathname.match('offer-')? 
+            <OfferFull /> : null
+        }
       </Nano>
     )
   }

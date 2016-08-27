@@ -69,7 +69,6 @@ webpackConfig.plugins = [
     }
   }),
 ]
-var ClosureCompilerPlugin = require('webpack-closure-compiler');
 if (__DEV__) {
   debug('Enable plugins for live development (HMR, NoErrors).')
   webpackConfig.plugins.push(
@@ -81,14 +80,6 @@ if (__DEV__) {
   webpackConfig.plugins.push(
     new webpack.optimize.OccurrenceOrderPlugin(),
     //new webpack.optimize.DedupePlugin(), // ie8 failed
-		/*new ClosureCompilerPlugin({ // for ie8 es3fy
-			compiler: {
-				language_in: 'ECMASCRIPT6',
-				language_out: 'ECMASCRIPT3',
-				compilation_level: 'SIMPLE_OPTIMIZATIONS'
-			},
-			concurrency: 3,
-		}),*/
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         unused: false,

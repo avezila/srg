@@ -1,33 +1,18 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-
 import {connect} from 'react-redux'
 
+import {requestComparableBounds, changeContext} from 'actions'
+import {BoundsScale, InBounds, GetXY, MoveCenter} from 'lib/Map'
+import Popover from "./Popover"
+import vars from 'styles/global.var.scss'
+import Timeout from 'lib/Timeout'
+
 import {loadApi} from './Api'
-import {requestComparableBounds,changeContext} from 'actions'
 import s from './YMap.sass'
 
-import {BoundsScale,InBounds} from 'lib/Map'
 
-import vars from 'styles/global.var.scss'
-
-import Popover from "./Popover"
-
-const TimerDT = 300;
-
-
-function getXY (b,p,width,height){
-  let y = (p[0]-b[0][0])*height/(b[1][0]-b[0][0])
-  let x = (p[1]-b[0][1])*width/(b[1][1]-b[0][1])
-  return [x,y];
-}
-
-function MoveCenter(center,b,dx,dy,width,height){
-  dy = -dy*(b[1][0]-b[0][0])/height;
-  dx = -dx*(b[1][1]-b[0][1])/width;
-  return [center[0]+dy,center[1]+dx];
-}
-
+export default
 @connect(({cian}) =>({
   offers      : cian.offers,
   offerIDs    : cian.offerIDs,
@@ -36,11 +21,21 @@ function MoveCenter(center,b,dx,dy,width,height){
   layout      : cian.layout,
 }),{requestComparableBounds,changeContext})
 class YMap extends Component {
-  constructor (props){
-    super(props);
-    this.now = {};
-    this.buildBalloon = ::this.buildBalloon;
+  static propTypes = {
+    layout : PropTypes.shape({
+      left    : PropTypes.array.isRequired,
+      right   : PropTypes.array.isRequired,
+      center  : PropTypes.array.isRequired,
+    }).isRequired,
+    enviroment  : PropTypes.object.isRequired,
+    offers      : PropTypes.object.isRequired,
+    offerIDs    : PropTypes.array.isRequired,
+    comparable  : PropTypes.object.isRequired,
+    requestComparableBounds : PropTypes.func.isRequired,
+    changeContext           : PropTypes.func.isRequired,
   }
+  now = {};
+
   async componentDidMount (){
     await this.tryInit(this._props || this.props);
     await this.draw(this._props || this.props)
@@ -49,7 +44,7 @@ class YMap extends Component {
     let width = $(this.refs.map).width();
     let height = $(this.refs.map).height();
     let bounds = this.map.getBounds();
-    let [x,y] = getXY(bounds,coords,width,height)
+    let [x,y] = GetXY(bounds,coords,width,height)
     let dx = 0;
     let dy = 0;
 
@@ -106,8 +101,7 @@ class YMap extends Component {
   }
   async tryInit (props){
     if(this.inited) return;
-    if(!props.enviroment)
-      return;
+
     if(!props.enviroment.bounds){
       if(this.requestingBounds)
         return;
@@ -151,7 +145,7 @@ class YMap extends Component {
     })
     this.map.events.add('boundschange',::this.boundschange)
   }
-  buildBalloon (o){
+  buildBalloon = o=> {
     global.o = o;
     this.layout.superclass.build.call(o);
     let marks = [];
@@ -178,17 +172,9 @@ class YMap extends Component {
     ), o.getElement());
   }
   boundschange (){
-    this.time = new Date().getTime();
-    if(!this.timer)
-      this.timer = setTimeout(::this.onTimer,TimerDT);
+    Timeout(this.timeout,300)
   }
-  onTimer (){
-    let time = new Date().getTime();
-    let dt = time - this.time;
-    if(dt<TimerDT)
-      return this.timer = setTimeout(::this.onTimer,TimerDT-dt)
-    this.timer = undefined;
-  
+  timeout = ()=> {
     this.props.changeContext({
       enviroment : {
         bounds : this.map.getBounds(),
@@ -209,7 +195,6 @@ class YMap extends Component {
   shouldComponentUpdate (){
     return false;
   }
-
   async draw (props){
     if(this.inited!=2) return; // w8 for first map draw
     let add = props.offerIDs.filter( id => {
@@ -256,5 +241,3 @@ class YMap extends Component {
     ) 
   }
 }
-
-export default YMap

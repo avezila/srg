@@ -1,18 +1,31 @@
 import React, { Component, PropTypes } from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router'
-import Glyphicon from 'react-bootstrap/es/Glyphicon'
+import {connect}  from 'react-redux'
+import {Link}     from 'react-router'
+import Glyphicon  from 'react-bootstrap/es/Glyphicon'
 
 import {changeFavorite,addOfferToReport} from "actions"
-import s from './OfferWide.sass'
+import {PrettyInt, PrettyFloat} from 'lib/Pretty'
 import * as Cian from "const/Cian"
 
+import s from './OfferWide.sass'
 
+
+export default
 @connect(({cian,router}) =>({
-  favoriteIDs : cian.context.favoriteIDs,
-  addedOfferIDs : cian.context.enviroment&&cian.context.enviroment.addedOfferIDs,
+  favoriteIDs   : cian.context.favoriteIDs,
+  addedOfferIDs : cian.context.enviroment.addedOfferIDs,
 }), {changeFavorite,addOfferToReport})
 class OfferWide extends Component {
+  static propTypes = {
+    offer           : PropTypes.object.isRequired,
+    favoriteIDs     : PropTypes.array.isRequired,
+    addedOfferIDs   : PropTypes.array,
+    changeFavorite  : PropTypes.func.isRequired,
+    addOfferToReport: PropTypes.func.isRequired,  
+  }
+  static defaultProps = {
+    addedOfferIDs : [],
+  }
   row (title,value,right){
     if(!value) return null;
     let max = 21;
@@ -26,7 +39,7 @@ class OfferWide extends Component {
     )
   }
   render (){
-    let {offers,offer,favoriteIDs,changeFavorite,addedOfferIDs=[],addOfferToReport} = this.props;
+    let {offer,favoriteIDs,changeFavorite,addedOfferIDs,addOfferToReport} = this.props;
 
     let cols = [];
     
@@ -37,18 +50,18 @@ class OfferWide extends Component {
 
     col = [];
     if(offer.price)
-      col.push(this.row("Цена",offer.price.toString().prettyInt()+"руб."));
+      col.push(this.row("Цена",offer.price.toString()::PrettyInt()+"руб."));
     if(offer.pricePerMeter)
-      col.push(this.row("Цена за метр",offer.pricePerMeter.toString().prettyInt()+"руб."));
+      col.push(this.row("Цена за метр",offer.pricePerMeter.toString()::PrettyInt()+"руб."));
     if(offer.wallsType)
       col.push(this.row("Тип стен",Cian.WallsType.map(offer.wallsType)));
     cols.push(col)
 
     col = [];
     if(offer.space)
-      col.push(this.row("Общая площадь", <span>{offer.space.toString().prettyFloat()+"м"}<sup>2</sup></span>));
+      col.push(this.row("Общая площадь", <span>{offer.space.toString()::PrettyFloat()+"м"}<sup>2</sup></span>));
     if(offer.kitchen)
-      col.push(this.row("Площадь кухни", <span>{offer.kitchen.toString().prettyFloat()+"м"}<sup>2</sup></span>));
+      col.push(this.row("Площадь кухни", <span>{offer.kitchen.toString()::PrettyFloat()+"м"}<sup>2</sup></span>));
     cols.push(col)
 
     col = [];
@@ -59,10 +72,6 @@ class OfferWide extends Component {
     if(offer.storeys.length)
       col.push(this.row("Этажей в строении",offer.storeys.join("-"),true));
     cols.push(col)
-
-    col = [];
-    
-
 
     return (
       <div className={s.root} style={this.props.style}>
@@ -95,29 +104,3 @@ class OfferWide extends Component {
     )
   }
 }
-
-      // <div className={s.root}>
-      //   <div className={s.title}>
-      //     <div className={s.hash}>
-      //       <Glyphicon 
-      //         className={s.glyph+ ((favoriteIDs.indexOf(offer.id)<0)?"":" "+s.active) }
-      //         onClick={()=> changeFavorite({
-      //           favoriteIDs : {
-      //             [offer.id]: favoriteIDs.indexOf(offer.id)<0,
-      //           }, 
-      //         })}
-      //         glyph="star"  />
-      //       <Glyphicon 
-      //         className={s.glyph+" "+s.glyph_plus+ ((addedOfferIDs.indexOf(offer.id)<0)?"":" "+s.active) }
-      //         onClick={()=> addOfferToReport({
-      //           id : offer.id,
-      //         })}
-      //         glyph="plus"  />
-      //       <strong className={s.small+" "+s.id}>{"#"+offer.id}</strong>
-      //     </div>
-      //     <div className={s.big}>{offer.rawAddress}</div>
-      //     <div className={s.small}>{Cian.OfferType.map(offer.type)}</div>
-      //     <div className={s.small}>{Cian.RealtyType.map(offer.realtyType)}</div>
-      //   </div>
-      // </div>
-export default OfferWide;
