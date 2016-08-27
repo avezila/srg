@@ -10,64 +10,66 @@ import s from './Favorite.sass'
 
 
 export default
-@connect(({cian}) =>({
-  favoriteIDs : cian.context.favoriteIDs,
+@connect(({cian}) => ({
+  favoriteIDs   : cian.context.favoriteIDs,
   addedOfferIDs : cian.context.enviroment.addedOfferIDs,
-  offers      : cian.offers,
-}),{changeLayout})
+  offers        : cian.offers,
+}), {changeLayout})
 class Favorite extends Component {
   static propTypes = {
     favoriteIDs   : PropTypes.array.isRequired,
     addedOfferIDs : PropTypes.array,
     offers        : PropTypes.object.isRequired,
-    changeLayout  : PropTypes.func.isRequired, 
+    changeLayout  : PropTypes.func.isRequired,
   }
   static defaultProps = {
-    addedOfferIDs : [],
+    addedOfferIDs: [],
   }
   state = {
-    open : true,
+    open: true,
   }
-  toggle (){
+  toggle = () => {
     this.setState({ open: !this.state.open })
   }
-  componentWillReceiveProps (props){
-    let now = this.props.favoriteIDs.filter(id=>this.props.offers[id]).length
-    let will = props.favoriteIDs.filter(id=>props.offers[id]).length;
-    if(this.state.open && !will)
-      this.setState({ open: false });
-    else if (!this.state.open && !now && will )
-      this.setState({ open: true });
+  componentWillReceiveProps (props) {
+    let now = this.props.favoriteIDs.filter(id => this.props.offers[id]).length
+    let will = props.favoriteIDs.filter(id => props.offers[id]).length
+    if (this.state.open && !will) {
+      this.setState({ open: false })
+    } else if (!this.state.open && !now && will) {
+      this.setState({ open: true })
+    }
   }
-  matchLayout (){
-    if(!this.refs.root) return;
-    if(this.state.open)
-      this.props.changeLayout({right:[+vars.favoriteWidth,   this.refs.root.height()]})
-    else
-      this.props.changeLayout({right:[+vars.favoriteWidthMin,this.refs.root.height()]})
+  matchLayout = () => {
+    if (!this.refs.root) return
+    if (this.state.open) {
+      this.props.changeLayout({right: [+vars.favoriteWidth, this.refs.root.height()]})
+    } else {
+      this.props.changeLayout({right: [+vars.favoriteWidthMin, this.refs.root.height()]})
+    }
   }
   render () {
-    let {offers, favoriteIDs} = this.props;
-    
-    let _favoriteIDs = {};
-    let _addedOfferIDs = {};
-    this.props.favoriteIDs.map(v=>_favoriteIDs[v] = true)
-    this.props.addedOfferIDs.map(v=>_addedOfferIDs[v] = true)
+    let {offers, favoriteIDs} = this.props
 
-    let rows = favoriteIDs.filter(id=>offers[id]).map(id=>
+    let _favoriteIDs = {}
+    let _addedOfferIDs = {}
+    this.props.favoriteIDs.map(v => (_favoriteIDs[v] = true))
+    this.props.addedOfferIDs.map(v => (_addedOfferIDs[v] = true))
+
+    let rows = favoriteIDs.filter(id => offers[id]).map(id =>
       <OfferShort key={id} offer={offers[id]} isFavorite={_favoriteIDs[id]} isAdded={_addedOfferIDs[id]} />
     )
-    let isContent = this.state.open && rows.length != 0;
+    let isContent = this.state.open && rows.length !== 0
 
     return (
       <Nano
-        onChange={::this.matchLayout}
-        ref="root"
-        byContent={true} 
+        onChange={this.matchLayout}
+        ref='root'
+        byContent
         className={`${s.root} ${!isContent && s.close}`} >
-        <div className={s.title} onClick={::this.toggle}>
-          { this.state.open ? <Glyphicon className={s.glyph} glyph="menu-down"  />
-                            : <Glyphicon className={s.glyph} glyph="menu-right" /> }
+        <div className={s.title} onClick={this.toggle}>
+          { this.state.open ? <Glyphicon className={s.glyph} glyph='menu-down'  />
+                            : <Glyphicon className={s.glyph} glyph='menu-right' /> }
           <span className={s.title_text}>Избранное</span>
         </div>
         {isContent && <div className={s.content}>{rows}</div>}

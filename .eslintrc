@@ -33,12 +33,14 @@
         "on": "colon"
       }
     }],
-    "no-multi-spaces": ["error", { 
-      "exceptions": { 
+    "no-multi-spaces": [0, {
+      "exceptions": {
+        "Property": true,
         "VariableDeclarator": true,
         "ImportDeclaration": true,
-        "AssignmentExpression" : true
-      } 
+        "AssignmentExpression" : true,
+        "ObjectExpression" : true
+      }
     }]
   }
 }

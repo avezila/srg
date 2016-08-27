@@ -1,1 +1,1 @@
-export default from "./OfferShort"
+export default from './OfferShort'

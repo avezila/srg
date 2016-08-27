@@ -1,1 +1,1 @@
-export default from "./Words"
+export default from './Words'

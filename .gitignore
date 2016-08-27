@@ -1,0 +1,10 @@
+.DS_STORE
+*.log
+**/.vscode
+node_modules
+
+dist
+coverage
+
+.idea/
+stats.json

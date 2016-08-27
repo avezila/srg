@@ -1,9 +1,9 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 
 import s from './ErrorCode.sass'
 
 
-export default function ErrorCode (props){
+export default function ErrorCode (props) {
   return (
     <div className={s.root}>
       <div className={s.content}>
@@ -13,4 +13,10 @@ export default function ErrorCode (props){
       </div>
     </div>
   )
+}
+
+ErrorCode.propTypes = {
+  message : PropTypes.string,
+  title   : PropTypes.string,
+  content : PropTypes.string,
 }

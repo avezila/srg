@@ -1,1 +1,1 @@
-export default from "./ErrorCode"
+export default from './ErrorCode'

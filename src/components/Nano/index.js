@@ -1,1 +1,1 @@
-export default from "./Nano"
+export default from './Nano'

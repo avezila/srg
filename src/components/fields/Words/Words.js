@@ -3,64 +3,64 @@ import { WithContext as ReactTags } from 'react-tag-input/lib/ReactTags';
 
 import Timeout from 'lib/Timeout'
 
-import s from "./Words.sass"
+import s from './Words.sass'
 
 
-export default 
+export default
 class Words extends Component {
   static propTypes = {
-    value     : PropTypes.shape({
-      data : PropTypes.array.isRequired,
+    value: PropTypes.shape({
+      data: PropTypes.array.isRequired,
     }).isRequired,
-    onChange  : PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
-  constructor (props){
+  constructor (props) {
     super(props)
     this.state = {
-      value : this.toState(props.value.data),
-    };
+      value: this.toState(props.value.data),
+    }
   }
-  toState (val=[]){
-    return val.map((v,i)=>({id:i,text:v}))
+  toState (val = []) {
+    return val.map((v, i) => ({id: i, text: v}))
   }
-  fromState (val=[]){
-    return val.map(v=>v.text)
+  fromState (val = []) {
+    return val.map(v => v.text)
   }
-  componentWillReceiveProps (props){
+  componentWillReceiveProps (props) {
     this.setState({
-      value : this.toState(props.value.data),
+      value: this.toState(props.value.data),
     })
   }
-  onChange (tags){
+  onChange (tags) {
     this.setState({
-      value : tags,
-    });
+      value: tags,
+    })
     Timeout(this.timeout)
   }
-  timeout = ()=> {
-    this.props.onChange(this.fromState(this.state.value));
+  timeout = () => {
+    this.props.onChange(this.fromState(this.state.value))
   }
-  handleDelete(i) {
-    let tags = [...this.state.value];
-    tags.splice(i, 1);
-    this.onChange(tags);
+  handleDelete = (i) => {
+    let tags = [...this.state.value]
+    tags.splice(i, 1)
+    this.onChange(tags)
   }
-  handleAddition(tag) {
-    let tags = [...this.state.value];
+  handleAddition = (tag) => {
+    let tags = [...this.state.value]
     tags.push({
-        id: tags.length + 1,
-        text: tag
-    });
-    this.onChange(tags);
+      id   : tags.length + 1,
+      text : tag
+    })
+    this.onChange(tags)
   }
   render () {
     return (
       <ReactTags
-        placeholder=""
+        placeholder=''
         tags={this.state.value}
-        handleDelete={::this.handleDelete}
-        handleAddition={::this.handleAddition}
-        handleInputBlur={::this.handleAddition}
+        handleDelete={this.handleDelete}
+        handleAddition={this.handleAddition}
+        handleInputBlur={this.handleAddition}
         autofocus={false}
         autocomplete={false}
         classNames={s}

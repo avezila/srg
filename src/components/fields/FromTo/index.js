@@ -1,1 +1,1 @@
-export default from "./FromTo"
+export default from './FromTo'

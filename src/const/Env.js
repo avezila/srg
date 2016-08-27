@@ -1,11 +1,7 @@
 
-
 const Env = {
-  host  : "https://srg-it.ru",
-  base  : "offersearch",
-  api   : "api",
-  token : JSON.stringify({
-    id: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-  }),
+  host : 'https://srg-it.ru',
+  base : 'offersearch',
+  api  : 'api',
 }
 export default Env
