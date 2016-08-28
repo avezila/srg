@@ -1,4 +1,4 @@
-import {createAction} from "redux-actions"
+import {createAction} from 'redux-actions'
 
 export const filterChange             = createAction('FILTER_CHANGE')
 export const filterOffersResponse     = createAction('FILTER_OFFERS_RESPONSE')

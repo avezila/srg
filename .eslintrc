@@ -41,6 +41,10 @@
         "AssignmentExpression" : true,
         "ObjectExpression" : true
       }
+    }],
+    "no-multiple-empty-lines": ["error", {
+      "max": 2,
+      "maxEOF": 1
     }]
   }
 }

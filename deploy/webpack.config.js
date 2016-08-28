@@ -5,8 +5,8 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import config from '../config'
 import _debug from 'debug'
 import path from 'path'
-import es3ifyPlugin from 'es3ify-webpack-plugin';
-import CSSSplitWebpackPlugin from 'css-split-webpack-plugin';
+import Es3ifyPlugin from 'es3ify-webpack-plugin'
+import CSSSplitWebpackPlugin from 'css-split-webpack-plugin'
 
 
 const debug = _debug('app:webpack:config')
@@ -15,16 +15,16 @@ const {__DEV__, __PROD__, __TEST__} = config.globals
 
 debug('Create configuration.')
 const webpackConfig = {
-  name: 'client',
-  target: 'web',
-  devtool: config.compiler_devtool,
-  resolve: {
-    mainFields: ['jsnext:main', 'browser', 'main'],
-    root: paths.client(),
-    extensions: ['', '.js', '.jsx', '.json','.css','.scss','.sass'],
+  name    : 'client',
+  target  : 'web',
+  devtool : config.compiler_devtool,
+  resolve : {
+    mainFields : ['jsnext:main', 'browser', 'main'],
+    root       : paths.client(),
+    extensions : ['', '.js', '.jsx', '.json', '.css', '.scss', '.sass'],
   },
-  module: {},
-  modulesDirectories: [
+  module             : {},
+  modulesDirectories : [
     'node_modules',
     path.resolve(__dirname, './node_modules')
   ]
@@ -48,9 +48,9 @@ webpackConfig.entry = {
 // Bundle Output
 // ------------------------------------
 webpackConfig.output = {
-  filename: `[name].[${config.compiler_hash_type}].js`,
-  path: paths.dist(),
-  publicPath: config.compiler_public_path
+  filename   : `[name].[${config.compiler_hash_type}].js`,
+  path       : paths.dist(),
+  publicPath : config.compiler_public_path
 }
 
 // ------------------------------------
@@ -59,12 +59,12 @@ webpackConfig.output = {
 webpackConfig.plugins = [
   new webpack.DefinePlugin(config.globals),
   new HtmlWebpackPlugin({
-    template: paths.client('index.html'),
-    hash: false,
-    favicon: paths.client('static/favicon.ico'),
-    filename: 'index.html',
-    inject: 'body',
-    minify: {
+    template : paths.client('index.html'),
+    hash     : false,
+    favicon  : paths.client('static/favicon.ico'),
+    filename : 'index.html',
+    inject   : 'body',
+    minify   : {
       collapseWhitespace: true
     }
   }),
@@ -79,38 +79,33 @@ if (__DEV__) {
   debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
   webpackConfig.plugins.push(
     new webpack.optimize.OccurrenceOrderPlugin(),
-    //new webpack.optimize.DedupePlugin(), // ie8 failed
+    // new webpack.optimize.DedupePlugin(), // ie8 failed
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        unused: false,
-        dead_code: true,
-        warnings: false,
-        properties : true,
+        unused        : false,
+        dead_code     : true,
+        warnings      : false,
+        properties    : true,
         drop_debugger : true,
-        unsafe : true,
-        unsafe_comps : true,
-        conditionals : true,
-        comparisons : true,
+        unsafe        : true,
+        unsafe_comps  : true,
+        conditionals  : true,
+        comparisons   : true,
 
-				sequences: true,
-				join_vars: true,
-				//drop_console: true,
+        sequences : true,
+        join_vars : true,
 
-				evaluate: true,
-				booleans: true,
-				loops: true,
-				hoist_funs: true,
-				if_return: true,
-				cascade: true,
-				negate_iife: true,
+        evaluate    : true,
+        booleans    : true,
+        loops       : true,
+        hoist_funs  : true,
+        if_return   : true,
+        cascade     : true,
+        negate_iife : true,
       },
-      comments : false,
-      //sourceMap : false,
-      //mangle : {
-				//toplevel : true,
-			//},
+      comments: false,
     }),
-		new es3ifyPlugin(),
+    new Es3ifyPlugin(),
   )
 }
 
@@ -122,34 +117,50 @@ if (!__TEST__) {
     })
   )
 }
+// ------------------------------------
+// Pre-Loaders
+// ------------------------------------
+/*
+[ NOTE ]
+We no longer use eslint-loader due to it severely impacting build
+times for larger projects. `npm run lint` still exists to aid in
+deploy processes (such as with CI), and it's recommended that you
+use a linting plugin for your IDE in place of this loader.
+If you do wish to continue using the loader, you can uncomment
+the code below and run `npm i --save-dev eslint-loader`. This code
+will be removed in a future release.
+*/
+webpackConfig.module.preLoaders = [{
+  test    : /\.(js|jsx)$/,
+  loader  : 'eslint-loader',
+  exclude : /node_modules/
+}]
+webpackConfig.eslint = {
+  configFile  : paths.base('.eslintrc'),
+  emitWarning : __DEV__
+}
 
 // ------------------------------------
 // Loaders
 // ------------------------------------
 // JavaScript / JSON
 var babelSettings = {
-  cacheDirectory: true,
-  presets: ['es2015-loose','stage-0','react'],
-  plugins: [
-    //['transform-es3-member-expression-literals',{loose:false}],
-    //['transform-es3-property-literals',{loose:false}],
-    //["transform-es5-property-mutators",{loose:false}],
-    //['transform-runtime',{loose:false}],
-    //['transform-es2015-modules-commonjs', { "loose": false }],
-    //['transform-es3-modules-literals', {loose:false}],
-    ["transform-decorators-legacy"],
+  cacheDirectory : true,
+  presets        : ['es2015-loose', 'stage-0', 'react'],
+  plugins        : [
+    ['transform-decorators-legacy'],
     ['transform-promise-to-bluebird'],
     ['transform-proto-to-assign'],
-    ["transform-async-to-module-method", {
-      "module": "bluebird",
-      "method": "coroutine"
+    ['transform-async-to-module-method', {
+      'module' : 'bluebird',
+      'method' : 'coroutine',
     }],
   ],
   env: {
     production: {
-      //presets: ['react-optimize']
-      plugins : [
-        //'transform-react-constant-elements', // smth broken
+      // presets: ['react-optimize']
+      plugins: [
+        // 'transform-react-constant-elements', // smth broken
         'transform-react-inline-elements',
         'transform-react-remove-prop-types',
         'transform-react-pure-class-to-function',
@@ -158,22 +169,22 @@ var babelSettings = {
   },
 }
 webpackConfig.module.loaders = [{
-  test: /\.(js|jsx)$/,
-  exclude : /(?=.*\b(node_modules)\b)(?!.*\b(node_modules\/[\w\.-]+\/(?:src|es)|react-router|redux-router|redux-saga|react-reinput|react-bootstrap-multiselect|react-tag-input|reat-bootstrap-datetimepicker|react-tag-input|react-dnd-html5-backend)\b)(.+)/i,
-  loaders: [
-    'babel?'+JSON.stringify(babelSettings),
+  test    : /\.(js|jsx)$/,
+  exclude : /(?=.*\b(node_modules)\b)(?!.*\b(node_modules\/[\w\.-]+\/(?:src|es)|react-router|redux-router|redux-saga|react-reinput|react-bootstrap-multiselect|react-tag-input|reat-bootstrap-datetimepicker|react-tag-input|react-dnd-html5-backend)\b)(.+)/i, // eslint-disable-line max-len
+  loaders : [
+    'babel?' + JSON.stringify(babelSettings),
   ]
 },
 {
-  test: /\.json$/,
-  loader: 'json'
+  test   : /\.json$/,
+  loader : 'json'
 }]
 
 // -- proto loaders
 webpackConfig.module.loaders.push({
-	test: /\.proto$/,
-	loader: "proto-loader"
-});
+  test   : /\.proto$/,
+  loader : 'proto-loader'
+})
 
 
 // ------------------------------------
@@ -186,7 +197,7 @@ const BASE_CSS_LOADER = 'css?sourceMap&-minimize'
 // Add any packge names here whose styles need to be treated as CSS modules.
 // These paths will be combined into a single regex.
 const PATHS_TO_TREAT_AS_CSS_MODULES = [
-  'react-toolbox','susy','compass-mixins'//,'nanoscroller' //, (example)
+  'react-toolbox', 'susy', 'compass-mixins'
 ]
 
 // If config has CSS modules enabled, treat this project's styles as CSS modules.
@@ -210,10 +221,10 @@ if (isUsingCSSModules) {
   ].join('&')
 
   webpackConfig.module.loaders.push({
-    test: /\.(scss|sass)$/,
-    include: cssModulesRegex,
-    exclude: /\.var\.(scss|sass)$/,
-    loaders: [
+    test    : /\.(scss|sass)$/,
+    include : cssModulesRegex,
+    exclude : /\.var\.(scss|sass)$/,
+    loaders : [
       'style',
       cssModulesLoader,
       'postcss',
@@ -222,10 +233,10 @@ if (isUsingCSSModules) {
   })
 
   webpackConfig.module.loaders.push({
-    test: /\.css$/,
-    include: cssModulesRegex,
-    exclude:  /\.var\.(scss|sass)$/,
-    loaders: [
+    test    : /\.css$/,
+    include : cssModulesRegex,
+    exclude : /\.var\.(scss|sass)$/,
+    loaders : [
       'style',
       cssModulesLoader,
       'postcss'
@@ -236,9 +247,9 @@ if (isUsingCSSModules) {
 // Loaders for files that should not be treated as CSS modules.
 const excludeCSSModules = isUsingCSSModules ? cssModulesRegex : false
 webpackConfig.module.loaders.push({
-  test: /\.(scss|sass)$/,
-  exclude: [excludeCSSModules,/\.var\.(scss|sass)$/],
-  loaders: [
+  test    : /\.(scss|sass)$/,
+  exclude : [excludeCSSModules, /\.var\.(scss|sass)$/],
+  loaders : [
     'style',
     BASE_CSS_LOADER,
     'postcss',
@@ -246,25 +257,25 @@ webpackConfig.module.loaders.push({
   ]
 })
 webpackConfig.module.loaders.push({
-  test: /\.css$/,
-  exclude: [excludeCSSModules,/\.var\.(scss|sass)$/],
-  loaders: [
+  test    : /\.css$/,
+  exclude : [excludeCSSModules, /\.var\.(scss|sass)$/],
+  loaders : [
     'style',
     BASE_CSS_LOADER,
     'postcss'
   ]
 })
 webpackConfig.module.loaders.push({
-  test: /\.var\.(scss|sass)$/,
-  loaders: ['sass-variable-loader'],
+  test    : /\.var\.(scss|sass)$/,
+  loaders : ['sass-variable-loader'],
 })
 
 // ------------------------------------
 // Style Configuration
 // ------------------------------------
 webpackConfig.sassLoader = {
-  data: '@import "var";',
-  includePaths: [
+  data         : '@import "var";',
+  includePaths : [
     paths.client('styles'),
     'node_modules',
     'react-toolbox/lib'
@@ -274,18 +285,18 @@ webpackConfig.sassLoader = {
 webpackConfig.postcss = [
   cssnano({
     autoprefixer: {
-      add: true,
-      remove: true,
-      browsers: ['last 2 versions','ie 8','ie 9']
+      add      : true,
+      remove   : true,
+      browsers : ['last 2 versions', 'ie 8', 'ie 9']
     },
     discardComments: {
       removeAll: true
     },
-    discardUnused: false,
-    mergeIdents: false,
-    reduceIdents: false,
-    safe: true,
-    sourcemap: true
+    discardUnused : false,
+    mergeIdents   : false,
+    reduceIdents  : false,
+    safe          : true,
+    sourcemap     : true,
   })
 ]
 

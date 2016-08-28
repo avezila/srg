@@ -1,1 +1,1 @@
-export default from "./YMap"
+export default from './YMap'

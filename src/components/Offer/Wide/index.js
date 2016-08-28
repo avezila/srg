@@ -1,1 +1,1 @@
-export default from "./OfferWide"
+export default from './OfferWide'

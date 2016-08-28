@@ -7,40 +7,40 @@ const debug = _debug('app:karma')
 debug('Create configuration.')
 
 const karmaConfig = {
-  basePath: '../', // project root in relation to deploy/karma.js
-  files: [
+  basePath : '../', // project root in relation to deploy/karma.js
+  files    : [
     {
-      pattern: `./${config.dir_test}/test-bundler.js`,
-      watched: false,
-      served: true,
-      included: true
+      pattern  : `./${config.dir_test}/test-bundler.js`,
+      watched  : false,
+      served   : true,
+      included : true
     }
   ],
-  singleRun: !argv.watch,
-  frameworks: ['mocha'],
-  reporters: ['mocha'],
-  preprocessors: {
+  singleRun     : !argv.watch,
+  frameworks    : ['mocha'],
+  reporters     : ['mocha'],
+  preprocessors : {
     [`${config.dir_test}/test-bundler.js`]: ['webpack']
   },
-  browsers: ['PhantomJS'],
-  webpack: {
-    devtool: 'cheap-module-source-map',
-    resolve: {
+  browsers : ['PhantomJS'],
+  webpack  : {
+    devtool : 'cheap-module-source-map',
+    resolve : {
       ...webpackConfig.resolve,
       alias: {
         ...webpackConfig.resolve.alias,
         sinon: 'sinon/pkg/sinon.js'
       }
     },
-    plugins: webpackConfig.plugins,
-    module: {
+    plugins : webpackConfig.plugins,
+    module  : {
       noParse: [
         /\/sinon\.js/
       ],
       loaders: webpackConfig.module.loaders.concat([
         {
-          test: /sinon(\\|\/)pkg(\\|\/)sinon\.js/,
-          loader: 'imports?define=>false,require=>false'
+          test   : /sinon(\\|\/)pkg(\\|\/)sinon\.js/,
+          loader : 'imports?define=>false,require=>false'
         }
       ])
     },
@@ -48,9 +48,9 @@ const karmaConfig = {
     // https://github.com/airbnb/enzyme/issues/47
     externals: {
       ...webpackConfig.externals,
-      'react/addons': true,
-      'react/lib/ExecutionEnvironment': true,
-      'react/lib/ReactContext': 'window'
+      'react/addons'                   : true,
+      'react/lib/ExecutionEnvironment' : true,
+      'react/lib/ReactContext'         : 'window'
     },
     sassLoader: webpackConfig.sassLoader
   },
@@ -65,10 +65,10 @@ const karmaConfig = {
 if (config.globals.__COVERAGE__) {
   karmaConfig.reporters.push('coverage')
   karmaConfig.webpack.module.preLoaders = [{
-    test: /\.(js|jsx)$/,
-    include: new RegExp(config.dir_client),
-    loader: 'isparta',
-    exclude: /node_modules/
+    test    : /\.(js|jsx)$/,
+    include : new RegExp(config.dir_client),
+    loader  : 'isparta',
+    exclude : /node_modules/
   }]
 }
 

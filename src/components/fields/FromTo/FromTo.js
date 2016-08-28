@@ -18,11 +18,11 @@ class FromTo extends Component {
   static propTypes = {
     value: PropTypes.shape({
       data: PropTypes.shape({
-        from : PropTypes.string.isRequired,
-        to   : PropTypes.string.isRequired,
+        from : PropTypes.string,
+        to   : PropTypes.string,
       }),
       type    : PropTypes.string.isRequired,
-      pattern : PropTypes.string.isRequired,
+      pattern : PropTypes.string,
     }).isRequired,
     onChange: PropTypes.func.isRequired,
   }

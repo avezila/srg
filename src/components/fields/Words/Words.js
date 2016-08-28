@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { WithContext as ReactTags } from 'react-tag-input/lib/ReactTags';
+import { WithContext as ReactTags } from 'react-tag-input/lib/ReactTags'
 
 import Timeout from 'lib/Timeout'
 
